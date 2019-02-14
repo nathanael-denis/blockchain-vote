@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>624</x>
+      <y>304</y>
+      <w>168</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Smart Contract
+// codé en JavaScript
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>512</x>
+      <y>328</y>
+      <w>160</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>180.0;10.0;180.0;130.0;10.0;130.0;10.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>464</x>
+      <y>496</y>
+      <w>128</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Permission
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>832</x>
+      <y>504</y>
+      <w>232</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Vote
+
+--
+idDocument : int 
+listeVotants : 
+protocoleVote : Protocole.MAJORITE
+--
+void lancerVote()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>752</x>
+      <y>328</y>
+      <w>208</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0;240.0;150.0;240.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>656</x>
+      <y>104</y>
+      <w>128</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Document
+--
+idDocument : int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>712</x>
+      <y>112</y>
+      <w>128</w>
+      <h>208</h>
+    </coordinates>
+    <panel_attributes>Est associé à
+lt=&lt;&lt;&lt;-
+m1=2
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;240.0;10.0;180.0;140.0;180.0;140.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>144</y>
+      <w>312</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>Partage
+lt=&lt;&lt;&lt;-
+m1=1,*
+m2=1
+</panel_attributes>
+    <additional_attributes>320.0;10.0;320.0;100.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>584</x>
+      <y>536</y>
+      <w>264</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>établit une session de vote
+lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>310.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>408</x>
+      <y>216</y>
+      <w>80</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Client
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1328</x>
+      <y>504</y>
+      <w>80</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>Blockchain
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1056</x>
+      <y>536</y>
+      <w>288</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Enregistre résultat dans ( transaction )
+lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>340.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>184</x>
+      <y>504</y>
+      <w>112</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Utilisateur
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>288</x>
+      <y>544</y>
+      <w>192</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Demande modification
+lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>220.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>232</x>
+      <y>112</y>
+      <w>440</w>
+      <h>408</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>530.0;10.0;10.0;10.0;10.0;490.0</additional_attributes>
+  </element>
+</diagram>
