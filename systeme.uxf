@@ -82,7 +82,8 @@
     </coordinates>
     <panel_attributes>Document
 --
--idDocument : int</panel_attributes>
+-idDocument : int
+-titre : string</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
