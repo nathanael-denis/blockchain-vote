@@ -1,0 +1,7 @@
+query getDocumentByClient {
+  description : "Liste les documents possédés par un 'client' spécifique"
+  statement:
+      SELECT org.vote.Document
+        WHERE (client == _$owner)
+          ORDER BY [catchTime ASC]
+}
