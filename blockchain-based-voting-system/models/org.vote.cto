@@ -34,4 +34,15 @@ asset Document identified by documentId{
   o String titreDocument
   o Integer nbCaracteres
   o String derniereModif
+  --> Client owner
+}
+
+transaction ModifierDocument{
+  --> Document documentModifie
+  --> Utilisateur contributeur
+}
+
+event DocumentModification{
+  o String documentId
+  o Integer utilisateurId
 }
