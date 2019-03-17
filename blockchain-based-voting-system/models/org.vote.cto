@@ -33,16 +33,21 @@ asset Document identified by documentId{
   o Integer documentId
   o String titreDocument
   o Integer nbCaracteres
-  o String derniereModif
+  o String texte
   --> Client owner
 }
 
 transaction ModifierDocument{
   --> Document documentModifie
-  --> Utilisateur contributeur
+  --> Utilisateur utilisateurModifiant
+  o Integer debutModification
+  o Integer finModification
+  o String chaineInseree
 }
 
 event DocumentModification{
-  o String documentId
+  o Integer documentId
   o Integer utilisateurId
+  o String chaineRemplacee
+  o String chaineInseree
 }
