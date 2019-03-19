@@ -12,6 +12,7 @@ const NS='org.vote';
 async function ModifierDocument(tx){
 
   //Get asset registry for Document
+  var firstTimeStamp= new Date().getTime;
   const documentRegistry = await getAssetRegistry(NS + '.Document');
   //Get participant registry for Utilisateurs
   const utilisateurRegistry = await getParticipantRegistry(NS + '.Utilisateur');
@@ -49,4 +50,10 @@ async function ModifierDocument(tx){
 
   //On publie l'évènement
   emit(documentModificationEvent);
+
+  // 7) Appeler les votants pour lancer les votes
+
+  var finaltimeStamp = new Date.getTime();
+  var result = finaltimeStamp--firstTimeStamp;
+
 }
