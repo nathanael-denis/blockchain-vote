@@ -20,14 +20,14 @@ async function ModifierDocument(tx){
   const document = await documentRegistry.get(tx.document.getIdentifier());
   //On s'assure que le document existe
   if(!document){
-    throw new Error('Le document avec l'Id $document.getIdentifier()} n'existe pas');
+    throw new Error('Le document avec l\'Id $document.getIdentifier()} n\'existe pas');
   }
   //Récupération de l'id du contributeur
   const contributeurId=tx.utilisateurModifiant.getIdentifier();
   //On s'assure que le contributeur existe
   const contributeur= await utilisateurRegistry.get(contributeurId);
   if (!contributeur){
-    throw new Error ('L\'utilisateur avec l'Id ${contributeurId} dn'existe pas');
+    throw new Error ('L\'utilisateur avec l\'Id ${contributeurId} dn\'existe pas');
   }
   //Maintenant on modifie le document
   const chaineRemplacee=document.texte.substring(tx.debutModification, tx.finModification);
@@ -45,7 +45,7 @@ async function ModifierDocument(tx){
   let documentModificationEvent = getFactory().newEvent(NS, 'DocumentModification');
   documentModificationEvent.documentId=document.documentId;
   documentModificationEvent.utilisateurId=contributeurId;
-  documentModificationEvent.chaineRemplace=chaineRemplacee;
+  documentModificationEvent.chaineRemplacee=chaineRemplacee;
   documentModificationEvent.chaineInseree=tx.chaineInseree;
 
   //On publie l'évènement
