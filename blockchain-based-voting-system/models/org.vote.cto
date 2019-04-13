@@ -18,6 +18,10 @@
 
 namespace org.vote
 
+enum ProtocoleVote {
+  o MAJORITE
+  o UNANIMITE
+}
 
 participant Utilisateur identified by utilisateurId{
   o Integer utilisateurId
@@ -37,7 +41,7 @@ asset Document identified by documentId{
   --> Client owner
 }
 
-transaction ModifierDocument{
+transaction modifierDocument{
   --> Document documentModifie
   --> Utilisateur utilisateurModifiant
   o Integer debutModification
@@ -45,9 +49,17 @@ transaction ModifierDocument{
   o String chaineInseree
 }
 
-event DocumentModification{
+event documentModification{
   o Integer documentId
   o Integer utilisateurId
   o String chaineRemplacee
   o String chaineInseree
+}
+
+transaction demarrerVotes{
+  --> Utilisateur[] listeVotants
+  o ProtocoleVote protocoleVote
+  o Integer documentId
+  o
+
 }

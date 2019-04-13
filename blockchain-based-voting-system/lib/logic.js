@@ -6,10 +6,10 @@
 const NS='org.vote';
 /**
 *Rajoute la modification à la version précédente du texte
-*@param {org.vote.ModifierDocument} tx - La mise a jour du document
+*@param {org.vote.modifierDocument} maj - La mise a jour du document
 *@transaction
 */
-async function ModifierDocument(tx){
+async function modifierDocument(maj){
 
   //Get asset registry for Document
   var firstTimeStamp= new Date().getTime;
@@ -17,36 +17,36 @@ async function ModifierDocument(tx){
   //Get participant registry for Utilisateurs
   const utilisateurRegistry = await getParticipantRegistry(NS + '.Utilisateur');
 
-  const document = await documentRegistry.get(tx.document.getIdentifier());
+  const document = await documentRegistry.get(maj.document.getIdentifier());
   //On s'assure que le document existe
   if(!document){
     throw new Error('Le document avec l\'Id $document.getIdentifier()} n\'existe pas');
   }
   //Récupération de l'id du contributeur
-  const contributeurId=tx.utilisateurModifiant.getIdentifier();
+  const contributeurId=maj.utilisateurModifiant.getIdentifier();
   //On s'assure que le contributeur existe
   const contributeur= await utilisateurRegistry.get(contributeurId);
   if (!contributeur){
     throw new Error ('L\'utilisateur avec l\'Id ${contributeurId} dn\'existe pas');
   }
   //Maintenant on modifie le document
-  const chaineRemplacee=document.texte.substring(tx.debutModification, tx.finModification);
-  if (tx.debutModification == tx.finModification){
-    document.texte=document.texte.substring(0, tx.debutModification) + tx.chaineInseree + document.texte.substring(tx.debutModification);
+  const chaineRemplacee=document.texte.substring(maj.debutModification, maj.finModification);
+  if (maj.debutModification == maj.finModification){
+    document.texte=document.texte.substring(0, maj.debutModification) + maj.chaineInseree + document.texte.substring(maj.debutModification);
   }
   else {
-      document.texte=document.texte.substring(0, tx.debutModification) + document.texte.substring(tx.finModification);
-      document.texte=document.texte.substring(0, tx.debutModification) + tx.chaineInseree + document.texte.substring(tx.debutModification);
+      document.texte=document.texte.substring(0, maj.debutModification) + document.texte.substring(maj.finModification);
+      document.texte=document.texte.substring(0, maj.debutModification) + maj.chaineInseree + document.texte.substring(maj.debutModification);
   }
   //Mettre à jour le registre du document
-  await documentRegistry.update(tx.document);
+  await documentRegistry.update(maj.document);
 
   //On créer l'evènement DocumentModification
   let documentModificationEvent = getFactory().newEvent(NS, 'DocumentModification');
   documentModificationEvent.documentId=document.documentId;
   documentModificationEvent.utilisateurId=contributeurId;
   documentModificationEvent.chaineRemplacee=chaineRemplacee;
-  documentModificationEvent.chaineInseree=tx.chaineInseree;
+  documentModificationEvent.chaineInseree=maj.chaineInseree;
 
   //On publie l'évènement
   emit(documentModificationEvent);
@@ -57,3 +57,10 @@ async function ModifierDocument(tx){
   var result = finaltimeStamp--firstTimeStamp;
 
 }
+
+/**
+*Rajoute la modification à la version précédente du texte
+*@param {org.vote.demarrerVotes} maj - La mise a jour du document
+*@transaction
+*/
+async function demarrerVotes(maj){}
