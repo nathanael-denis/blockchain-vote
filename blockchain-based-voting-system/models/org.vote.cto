@@ -60,6 +60,11 @@ transaction demarrerVotes{
   --> Utilisateur[] listeVotants
   o ProtocoleVote protocoleVote
   o Integer documentId
-  o
 
+}
+
+event voteTermine{
+  o Integer documentId
+  o ProtocoleVote protocoleVote
+  o Boolean resultat
 }
