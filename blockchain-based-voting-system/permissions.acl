@@ -28,4 +28,9 @@ rule NetworkAdminSystem {
     action: ALLOW
 }
 
-rule 
+rule DocumentContributor {
+    description : "Has right to cast vote to modify"
+    participant:"org.hyperledger.composer.system.DocumentContributor"
+    operation: READ
+    resource: " org.hyperledger.composer.system.Document"
+}
