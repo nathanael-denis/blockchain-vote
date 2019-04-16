@@ -57,6 +57,7 @@ event documentModification{
 }
 
 transaction demarrerVotes{
+  --> Utilisateur contributeur
   --> Utilisateur[] listeVotants
   o ProtocoleVote protocoleVote
   o Integer documentId
