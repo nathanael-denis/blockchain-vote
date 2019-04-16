@@ -63,4 +63,7 @@ async function modifierDocument(maj){
 *@param {org.vote.demarrerVotes} maj - La mise a jour du document
 *@transaction
 */
-async function demarrerVotes(maj){}
+
+async function demarrerVotes(maj){
+  fo
+}
