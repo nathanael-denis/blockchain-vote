@@ -24,18 +24,15 @@ enum ProtocoleVote {
 }
 
 participant Utilisateur identified by utilisateurId{
-  o Integer utilisateurId
-  o String nomUtilisateur
+  o String utilisateurId
 }
 
 participant Client identified by ClientId{
-  o Integer ClientId
-  o String nomClient
+  o String ClientId
 }
 
 asset Document identified by documentId{
-  o Integer documentId
-  o String titreDocument
+  o String documentId
   o Integer nbCaracteres
   o String texte
   --> Client owner

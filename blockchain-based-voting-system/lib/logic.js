@@ -8,7 +8,7 @@ const NS='org.vote';
 *Rajoute la modification à la version précédente du texte
 *@param {org.vote.modifierDocument} maj - La mise a jour du document
 *@transaction
-*/
+j*/
 async function modifierDocument(maj){ // vérifier async pour cette fonction
 
   //Get asset registry for Document
@@ -25,9 +25,9 @@ async function modifierDocument(maj){ // vérifier async pour cette fonction
   //Récupération de l'id du contributeur
   const contributeurId=maj.utilisateurModifiant.getIdentifier();
   //On s'assure que le contributeur existe
-  const contributeur= await utilisateurRegistry.get(contributeurId);
+  const contributeur=await utilisateurRegistry.get(contributeurId);
   if (!contributeur){
-    throw new Error ('L\'utilisateur avec l\'Id ${contributeurId} dn\'existe pas');
+    throw new Error('L\'utilisateur avec l\'Id ${contributeurId} dn\'existe pas');
   }
   //Maintenant on modifie le document
   const chaineRemplacee=document.texte.substring(maj.debutModification, maj.finModification);
@@ -52,10 +52,9 @@ async function modifierDocument(maj){ // vérifier async pour cette fonction
   emit(documentModificationEvent);
 
   // 7) Appeler les votants pour lancer les votes
-
-  var finaltimeStamp = new Date.getTime();
-  var result = finaltimeStamp--firstTimeStamp;
-
+  // Pouvoir créer le vote
+  var finalTimeStamp = new Date.getTime();
+  //var result = finalTimeStamp--firstTimeStamp;
 }
 
 /**
@@ -101,7 +100,7 @@ voteTermineEvent.documentId=vote.documentId;
 * sinon que nbNon est égal à 0
 */
 if(vote.protocoleVote=="MAJORITE"){
-  if(nbOui<nbNon){
+  if(nbOui>nbNon){
     voteTermineEvent.resultat=true;
   }
 }
