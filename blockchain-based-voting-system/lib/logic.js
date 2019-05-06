@@ -9,7 +9,7 @@ const NS='org.vote';
 *@param {org.vote.modifierDocument} maj - La mise a jour du document
 *@transaction
 j*/
-async function modifierDocument(maj){ // vérifier async pour cette fonction
+async function modifierDocument(maj){
 
   //Get asset registry for Document
   var firstTimeStamp= new Date().getTime;
@@ -17,7 +17,7 @@ async function modifierDocument(maj){ // vérifier async pour cette fonction
   //Get participant registry for Utilisateurs
   const utilisateurRegistry = await getParticipantRegistry(NS + '.Utilisateur');
 
-  const document = await documentRegistry.get(maj.document.getIdentifier());
+  const document = await documentRegistry.get(maj.documentModifie.getIdentifier());
   //On s'assure que le document existe
   if(!document){
     throw new Error('Le document avec l\'Id $document.getIdentifier()} n\'existe pas');
