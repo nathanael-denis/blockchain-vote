@@ -40,7 +40,7 @@ asset Document identified by documentId{
 
 transaction modifierDocument{
   --> Document documentModifie
-  --> Utilisateur utilisateurModifiant
+  O Utilisateur utilisateurModifiant // should fix "Error: expected Resource or Concept"
   o Integer debutModification
   o Integer finModification
   o String chaineInseree
