@@ -8,7 +8,7 @@ const NS='org.vote';
 *Rajoute la modification à la version précédente du texte
 *@param {org.vote.modifierDocument} maj - La mise a jour du document
 *@transaction
-j*/
+*/
 async function modifierDocument(maj){
 
   //Get asset registry for Document
@@ -43,10 +43,10 @@ async function modifierDocument(maj){
 
   //On créer l'evènement DocumentModification
   let documentModificationEvent = getFactory().newEvent(NS, 'DocumentModification');
-  documentModificationEvent.documentId=document.documentId;
-  documentModificationEvent.utilisateurId=contributeurId;
-  documentModificationEvent.chaineRemplacee=chaineRemplacee;
-  documentModificationEvent.chaineInseree=maj.chaineInseree;
+  document.setIdentifier(documentModificationEvent.documentId);
+  contributeur.setIdentifier( documentModificationEvent.utilisateurId);
+  //documentModificationEvent.chaineRemplacee=chaineRemplacee;
+  //documentModificationEvent.chaineInseree=maj.chaineInseree;
 
   //On publie l'évènement
   emit(documentModificationEvent);

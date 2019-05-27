@@ -27,3 +27,11 @@ rule NetworkAdminSystem {
     resource: "org.hyperledger.composer.system.**"
     action: ALLOW
 }
+
+rule PierreBibleContributor {
+  	description: " Has the right to modify the Bible"
+  	participant: "org.vote.Utilisateur#Pierre"
+  	operation: READ, UPDATE // à vérifier, parle-t-on d'un UPDATE direct, ou bien de la possibilité d'appeler le vote?
+  	resource: "org.vote.Document#Bible"
+  	action: ALLOW
+}
