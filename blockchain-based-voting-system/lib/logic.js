@@ -7,20 +7,21 @@ const NS='org.vote';
 
 /**
 *Ajoute le document auquel contribue l'utilisateur à la liste des documents
-*@param {org.vote.utilisateurContribueAuDocument} user,doc  - prend l'utilisateur et le document en paramètre
+*@param {org.vote.utilisateurContribueAuDocument} couple  - prend le couple utilisateur/document en paramètre
 *@transaction
 */
 
-async function utilisateurContribueAuDocument(){
+async function utilisateurContribueAuDocument(couple){
   const documentRegistry = await getAssetRegistry(NS + '.Document');
   const utilisateurRegistry = await getParticipantRegistry(NS + '.Utilisateur');
-  const document = await documentRegistry.get(doc.getIdentifier());
-  const contributeur= await utilisateurRegistry.get(user.getIdentifier());
+  const document = await documentRegistry.get(couple.doc.getIdentifier());
+  const contributeur= await utilisateurRegistry.get(couple.nouveauContributeur.getIdentifier());
   contributeur.documentsModifiables.push(document);
+  utilisateurRegistry.update(contributeur);
     //On créer l'evènement associé à l'ajout
   let nouveauContributeurEvent = getFactory().newEvent(NS, 'nouveauContributeur');
-  nouveauContributeurEvent.doc=document;
-  nouveauContributeurEvent.nouveauContributeur=contributeur;
+  nouveauContributeurEvent.doc=couple.doc;
+  nouveauContributeurEvent.nouveauContributeur=couple.nouveauContributeur;
 
   //On publie l'évènement
   emit(nouveauContributeurEvent);
