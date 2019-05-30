@@ -25,10 +25,11 @@ enum ProtocoleVote {
 
 participant Utilisateur identified by utilisateurId{
   o String utilisateurId
+  --> Document[] documentsModifiables
 }
 
-participant Client identified by ClientId{
-  o String ClientId
+participant Client identified by clientId{
+  o String clientId
 }
 
 asset Document identified by documentId{
@@ -38,17 +39,27 @@ asset Document identified by documentId{
   --> Client owner
 }
 
+transaction utilisateurContribueAuDocument{
+  --> Document doc
+  --> Utilisateur nouveauContributeur
+}
+
+event nouveauContributeur{
+  --> Document doc
+  --> Utilisateur nouveauContributeur
+}
+
 transaction modifierDocument{
-  --> Document documentModifie
-  O Utilisateur utilisateurModifiant // should fix "Error: expected Resource or Concept"
   o Integer debutModification
   o Integer finModification
   o String chaineInseree
+  --> Document documentModifie
+  --> Utilisateur utilisateurModifiant
 }
 
 event documentModification{
-  o Integer documentId
-  o Integer utilisateurId
+  o String documentId
+  o String utilisateurId
   o String chaineRemplacee
   o String chaineInseree
 }
@@ -57,11 +68,11 @@ transaction demarrerVotes{
   --> Utilisateur contributeur
   --> Utilisateur[] listeVotants
   o ProtocoleVote protocoleVote
-  o Integer documentId
+  o String documentId
 }
 
 event voteTermine{
-  o Integer documentId
-  o ProtocoleVote protocoleVote
+  o String documentId
   o Boolean resultat
+  o ProtocoleVote protocoleVote
 }

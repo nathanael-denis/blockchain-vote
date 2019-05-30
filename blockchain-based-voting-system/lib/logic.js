@@ -4,11 +4,35 @@
 */
 
 const NS='org.vote';
+
+/**
+*Ajoute le document auquel contribue l'utilisateur à la liste des documents
+*@param {org.vote.utilisateurContribueAuDocument} user,doc  - prend l'utilisateur et le document en paramètre
+*@transaction
+*/
+
+async function utilisateurContribueAuDocument(){
+  const documentRegistry = await getAssetRegistry(NS + '.Document');
+  const utilisateurRegistry = await getParticipantRegistry(NS + '.Utilisateur');
+  const document = await documentRegistry.get(doc.getIdentifier());
+  const contributeur= await utilisateurRegistry.get(user.getIdentifier());
+  contributeur.documentsModifiables.push(document);
+    //On créer l'evènement associé à l'ajout
+  let nouveauContributeurEvent = getFactory().newEvent(NS, 'nouveauContributeur');
+  nouveauContributeurEvent.doc=document;
+  nouveauContributeurEvent.nouveauContributeur=contributeur;
+
+  //On publie l'évènement
+  emit(nouveauContributeurEvent);
+
+}
 /**
 *Rajoute la modification à la version précédente du texte
 *@param {org.vote.modifierDocument} maj - La mise a jour du document
 *@transaction
 */
+
+
 async function modifierDocument(maj){
 
   //Get asset registry for Document
@@ -45,8 +69,8 @@ async function modifierDocument(maj){
   let documentModificationEvent = getFactory().newEvent(NS, 'DocumentModification');
   document.setIdentifier(documentModificationEvent.documentId);
   contributeur.setIdentifier( documentModificationEvent.utilisateurId);
-  //documentModificationEvent.chaineRemplacee=chaineRemplacee;
-  //documentModificationEvent.chaineInseree=maj.chaineInseree;
+  documentModificationEvent.chaineRemplacee=chaineRemplacee;
+  documentModificationEvent.chaineInseree=maj.chaineInseree;
 
   //On publie l'évènement
   emit(documentModificationEvent);

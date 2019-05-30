@@ -31,7 +31,26 @@ rule NetworkAdminSystem {
 rule PierreBibleContributor {
   	description: " Has the right to modify the Bible"
   	participant: "org.vote.Utilisateur#Pierre"
-  	operation: READ, UPDATE // à vérifier, parle-t-on d'un UPDATE direct, ou bien de la possibilité d'appeler le vote?
+  	operation: READ
   	resource: "org.vote.Document#Bible"
   	action: ALLOW
+}
+
+rule OwnerHasRightToRead {
+  description: " The client has always the right to access its own document "
+  participant(client): "org.vote.Client"
+  operation: READ
+  resource(doc): "org.vote.Document"
+  condition: (client.getIdentifier() == doc.owner.getIdentifier())
+  action: ALLOW
+ }
+
+
+rule ContributorHasRightToRead {
+  description: "If a user contributes to a document, he has access to the document"
+  participant(user): "org.vote.Utilisateur"
+  operation: READ
+  resource(doc): "org.vote.Document"
+  condition: (doc in user.documentsModifiables)
+  action: ALLOW
 }
