@@ -37,7 +37,7 @@ async function utilisateurContribueAuDocument(couple){
 async function modifierDocument(maj){
 
   //Get asset registry for Document
-  var firstTimeStamp= new Date().getTime;
+  var firstTimeStamp= new Date();
   const documentRegistry = await getAssetRegistry(NS + '.Document');
   //Get participant registry for Utilisateurs
   const utilisateurRegistry = await getParticipantRegistry(NS + '.Utilisateur');
@@ -58,18 +58,20 @@ async function modifierDocument(maj){
   const chaineRemplacee=document.texte.substring(maj.debutModification, maj.finModification);
   if (maj.debutModification == maj.finModification){
     document.texte=document.texte.substring(0, maj.debutModification) + maj.chaineInseree + document.texte.substring(maj.debutModification);
+    // Il faut mettre à jour le nombre de caractères
+    document.nbCaracteres+=maj.chaineInseree.length;
   }
   else {
       document.texte=document.texte.substring(0, maj.debutModification) + document.texte.substring(maj.finModification);
       document.texte=document.texte.substring(0, maj.debutModification) + maj.chaineInseree + document.texte.substring(maj.debutModification);
   }
   //Mettre à jour le registre du document
-  await documentRegistry.update(maj.document);
+  await documentRegistry.update(document);
 
   //On créer l'evènement DocumentModification
-  let documentModificationEvent = getFactory().newEvent(NS, 'DocumentModification');
-  document.setIdentifier(documentModificationEvent.documentId);
-  contributeur.setIdentifier( documentModificationEvent.utilisateurId);
+  let documentModificationEvent = getFactory().newEvent(NS, 'documentModification');
+  documentModificationEvent.documentId=document.getIdentifier();
+  documentModificationEvent.utilisateurId=contributeurId;
   documentModificationEvent.chaineRemplacee=chaineRemplacee;
   documentModificationEvent.chaineInseree=maj.chaineInseree;
 
@@ -78,7 +80,7 @@ async function modifierDocument(maj){
 
   // 7) Appeler les votants pour lancer les votes
   // Pouvoir créer le vote
-  var finalTimeStamp = new Date.getTime();
+  var finalTimeStamp = new Date;
   //var result = finalTimeStamp--firstTimeStamp;
 }
 
