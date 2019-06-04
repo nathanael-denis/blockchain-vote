@@ -41,7 +41,6 @@ async function modifierDocument(maj){
   const documentRegistry = await getAssetRegistry(NS + '.Document');
   //Get participant registry for Utilisateurs
   const utilisateurRegistry = await getParticipantRegistry(NS + '.Utilisateur');
-
   const document = await documentRegistry.get(maj.documentModifie.getIdentifier());
   //On s'assure que le document existe
   if(!document){
@@ -57,7 +56,7 @@ async function modifierDocument(maj){
   //Maintenant on modifie le document
   const chaineRemplacee=document.texte.substring(maj.debutModification, maj.finModification);
   if (maj.debutModification == maj.finModification){
-    document.texte=document.texte.substring(0, maj.debutModification) + maj.chaineInseree + document.texte.substring(maj.debutModification);
+    document.texte=document.texte.substring(0, maj.debutModification) + maj.chaineInseree +       document.texte.substring(maj.debutModification);
     // Il faut mettre à jour le nombre de caractères
     document.nbCaracteres+=maj.chaineInseree.length;
   }
@@ -101,42 +100,41 @@ async function demarrerVotes(vote){
   var nbOui=0; // nombre de oui
   var nbNon=0; // nombre de non
   /* On traite les différentes réponses des clients */
-  for(var i=1;n = vote.listeVotants.length; i++){
-  var correct=false; // la réponse est-elle correcte?
-  while(!correct){
-  var choix = prompt("Validez (OUI) ou refusez (NON) la modification");
-  alert(choix);
-  if(choix!="OUI" || choix !="NON"){
-    alert("OUI et NON seules réponses valides; veuillez entrer une réponse");
-  }
-  if(choix=="OUI"){
-    correct=true;
-    alert("Arrivé ici"+choix);
-    nbOui++;
-  }
-  if(choix=="NON"){
-    correct=true;
-    nbNon++;
-  }
+  for(var i=0;i<vote.listeVotants.length; i++){
+	  var correct=false; // la réponse est-elle correcte?
+	  while(!correct){
+ 		 var choix = prompt("Validez (OUI) ou refusez (NON) la modification");
+		 alert(choix);
+  		 if(choix!="OUI" && choix !="NON"){
+    		alert("OUI et NON seules réponses valides; veuillez entrer une réponse");
+  			}
+  		 if(choix=="OUI"){
+    		correct=true;
+    		nbOui++;
+            }
+  		 if(choix=="NON"){
+   		 correct=true;
+   		 nbNon++;
+		  }
+		}
 }
-}
-let voteTermineEvent = getFactory().newEvent(NS, 'protocoleVote');
-voteTermineEvent.resultat=false; // par défaut pour faciliter les vérifications
-voteTermineEvent.protocoleVote=vote.protocoleVote
-voteTermineEvent.documentId=vote.documentId;
+  let voteTermineEvent = getFactory().newEvent(NS, 'voteTermine');
+  voteTermineEvent.resultat=false; // par défaut pour faciliter les vérifications
+  voteTermineEvent.protocoleVote=vote.protocoleVote;
+  voteTermineEvent.documentId=vote.documentId;
 /* On fait le bilan des résulats des demarrerVotes
 *si le protocole est majorité, on vérifie que nbOui>nbNon
 * sinon que nbNon est égal à 0
 */
-if(vote.protocoleVote=="MAJORITE"){
-  if(nbOui>nbNon){
-    voteTermineEvent.resultat=true;
+  if(vote.protocoleVote=="MAJORITE"){
+    if(nbOui>nbNon){
+      voteTermineEvent.resultat=true;
+  }
+  }
+  if(vote.protocoleVote=="UNANIMITE"){
+    if(nbNon==0){
+      voteTermineEvent.resultat=true;
   }
 }
-if(vote.protocoleVote=="UNANIMITE"){
-  if(nbNon==0){
-    voteTermineEvent.resultat=true;
-  }
-}
-emit(voteTermineEvent);
+  emit(voteTermineEvent);
 }
