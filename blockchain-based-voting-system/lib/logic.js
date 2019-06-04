@@ -92,7 +92,7 @@ async function modifierDocument(maj){
 
 async function demarrerVotes(vote){
   const documentRegistry = await getAssetRegistry(NS + '.Document');
-  const document = await documentRegistry.get(vote.document.getIdentifier());
+  const document = await documentRegistry.get(vote.documentId);
   //On s'assure que le document existe
   if(!document){
     throw new Error('Le document avec l\'Id $document.getIdentifier()} n\'existe pas');
@@ -101,15 +101,17 @@ async function demarrerVotes(vote){
   var nbOui=0; // nombre de oui
   var nbNon=0; // nombre de non
   /* On traite les différentes réponses des clients */
-  for(var i=0;n = vote.listeVotants.length; i++){
+  for(var i=1;n = vote.listeVotants.length; i++){
   var correct=false; // la réponse est-elle correcte?
   while(!correct){
   var choix = prompt("Validez (OUI) ou refusez (NON) la modification");
+  alert(choix);
   if(choix!="OUI" || choix !="NON"){
     alert("OUI et NON seules réponses valides; veuillez entrer une réponse");
   }
   if(choix=="OUI"){
     correct=true;
+    alert("Arrivé ici"+choix);
     nbOui++;
   }
   if(choix=="NON"){

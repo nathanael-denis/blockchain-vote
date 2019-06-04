@@ -28,13 +28,14 @@ rule NetworkAdminSystem {
     action: ALLOW
 }
 
-rule PierreBibleContributor {
-  	description: " Has the right to modify the Bible"
-  	participant: "org.vote.Utilisateur#Pierre"
-  	operation: READ
-  	resource: "org.vote.Document#Bible"
-  	action: ALLOW
+rule ParticipantSystem {
+  description: "Grant any participants the right to see every resource"
+  participant: "org.vote.Utilisateur"
+  operation: READ
+  resource: "**"
+  action: ALLOW
 }
+
 
 rule OwnerHasRightToRead {
   description: " The client has always the right to access its own document "
@@ -52,5 +53,13 @@ rule ContributorHasRightToRead {
   operation: READ
   resource(doc): "org.vote.Document"
   condition: (doc in user.documentsModifiables)
+  action: ALLOW
+}
+
+rule UserHasRightToCreateABlock {
+  description: "Users can right in the blockchain"
+  participant: "org.vote.Utilisateur"
+  operation: CREATE
+  resource:"org.vote.modifierDocument"
   action: ALLOW
 }
