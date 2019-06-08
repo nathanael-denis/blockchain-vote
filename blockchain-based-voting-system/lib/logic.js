@@ -102,9 +102,10 @@ async function demarrerVotes(vote){
   /* On traite les différentes réponses des clients */
   for(var i=0;i<vote.listeVotants.length; i++){
 	  var correct=false; // la réponse est-elle correcte?
+      var cur_votant=vote.listeVotants[i];
 	  while(!correct){
- 		 var choix = prompt("Validez (OUI) ou refusez (NON) la modification");
-		 alert(choix);
+          var fenetre_contributeur = open("","id","");
+ 		  var choix = fenetre_contributeur.prompt("Bonjour "+cur_votant+". Validez (OUI) ou refusez (NON) la modification");
   		 if(choix!="OUI" && choix !="NON"){
     		alert("OUI et NON seules réponses valides; veuillez entrer une réponse");
   			}
@@ -118,6 +119,8 @@ async function demarrerVotes(vote){
 		  }
 		}
 }
+  var fenetre_contributeur = open("","id","");
+  var prompt1=fenetre_contributeur.prompt("Validez (OUI) ou refusez (NON) la modification");
   let voteTermineEvent = getFactory().newEvent(NS, 'voteTermine');
   voteTermineEvent.resultat=false; // par défaut pour faciliter les vérifications
   voteTermineEvent.protocoleVote=vote.protocoleVote;
