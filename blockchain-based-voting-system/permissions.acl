@@ -37,10 +37,10 @@ rule ParticipantSystem {
 }
 
 
-rule OwnerHasRightToRead {
-  description: " The client has always the right to access its own document "
+rule OwnerHasRightToReadAndUpdate {
+  description: " The client has always the right to see and update to access its own document "
   participant(client): "org.vote.Client"
-  operation: READ
+  operation: READ, UPDATE
   resource(doc): "org.vote.Document"
   condition: (client.getIdentifier() == doc.owner.getIdentifier())
   action: ALLOW
@@ -50,7 +50,7 @@ rule OwnerHasRightToRead {
 rule ContributorHasRightToRead {
   description: "If a user contributes to a document, he has access to the document"
   participant(user): "org.vote.Utilisateur"
-  operation: READ
+  operation: READ, UPDATE
   resource(doc): "org.vote.Document"
   condition: (doc in user.documentsModifiables)
   action: ALLOW
@@ -62,4 +62,36 @@ rule UserHasRightToCreateABlock {
   operation: CREATE
   resource:"org.vote.modifierDocument"
   action: ALLOW
+}
+
+rule UserCanCreateInHistorianRecord {
+  description: "Users can only add new entries in the historian record but shall not delete them"
+  participant: "org.vote.Utilisateur"
+  operation: CREATE
+  resource:"org.hyperledger.composer.system.HistorianRecord"
+  action: ALLOW
+}
+
+rule PhilippeCanWriteInTheBible {
+  description: "Philippe has the right to write in the Bible"
+  participant: "org.vote.Utilisateur#Philippe"
+  operation: UPDATE
+  resource:"org.vote.Document#Bible"
+  action:ALLOW
+}
+
+rule AndreCanWriteInTheBible {
+  description: "André has the right to write in the Bible"
+  participant: "org.vote.Utilisateur#André"
+  operation: UPDATE
+  resource:"org.vote.Document#Bible"
+  action:ALLOW
+}
+
+rule BelzebuthCanWriteInTheCodex {
+  description: "Belzebth has the right to write in the Codex"
+  participant: "org.vote.Utilisateur#Belzébuth"
+  operation: UPDATE
+  resource:"org.vote.Document#Codex Gigas"
+  action:ALLOW
 }

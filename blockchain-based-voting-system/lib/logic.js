@@ -42,6 +42,7 @@ async function modifierDocument(maj){
   //Get participant registry for Utilisateurs
   const utilisateurRegistry = await getParticipantRegistry(NS + '.Utilisateur');
   const document = await documentRegistry.get(maj.documentModifie.getIdentifier());
+  const documentId=document.getIdentifier();
   //On s'assure que le document existe
   if(!document){
     throw new Error('Le document avec l\'Id $document.getIdentifier()} n\'existe pas');
@@ -61,14 +62,63 @@ async function modifierDocument(maj){
     document.nbCaracteres+=maj.chaineInseree.length;
   }
   else {
-      document.texte=document.texte.substring(0, maj.debutModification) + document.texte.substring(maj.finModification);
-      document.texte=document.texte.substring(0, maj.debutModification) + maj.chaineInseree + document.texte.substring(maj.debutModification);
+      document.texte=document.texte.substring(0, maj.debutModification) + maj.chaineInseree + document.texte.substring(maj.finModification);
+    document.nbCaracteres=document.nbCaracteres-(maj.finModification-maj.debutModification)+maj.chaineInseree.length;
   }
   //Mettre à jour le registre du document
-  await documentRegistry.update(document);
+  //Début démarrer vote
+  var nbOui=0; // nombre de oui
+  var nbNon=0; // nombre de non
+  //On détermine la liste des votants
 
+  /* On traite les différentes réponses des clients */
+
+  for(var i=0;i<maj.listeVotants.length; i++){
+	  var correct=false; // la réponse est-elle correcte?
+      var cur_votant=maj.listeVotants[i];
+      var fenetre_contributeur=open("",i,""); //on ouvre une page pour demander à l'utilisateur de s'authentifier
+	  while(!correct){
+ 		  var choix = fenetre_contributeur.prompt("Bonjour "+cur_votant.utilisateurId+". Validez (OUI) ou refusez (NON) la modification");
+  		 if(choix!="OUI" && choix !="NON"){
+    		alert("OUI et NON seules réponses valides; veuillez entrer une réponse");
+  			}
+  		 if(choix=="OUI"){
+    		correct=true;
+    		nbOui++;
+            fenetre_contributeur.close();
+            }
+  		 if(choix=="NON"){
+   		 correct=true;
+   		 nbNon++;
+         fenetre_contributeur.close();
+         }
+		}
+}
   //On créer l'evènement DocumentModification
   let documentModificationEvent = getFactory().newEvent(NS, 'documentModification');
+  documentModificationEvent.resultat=false; // par défaut pour faciliter les vérifications
+  documentModificationEvent.protocoleVote=maj.protocoleVote;
+/* On fait le bilan des résulats des demarrerVotes
+*si le protocole est majorité, on vérifie que nbOui>nbNon
+* sinon que nbNon est égal à 0
+*/
+  if(maj.protocoleVote=="MAJORITE"){
+    if(nbOui>nbNon){
+      documentModificationEvent.resultat=true;
+  }
+  }
+  if(maj.protocoleVote=="UNANIMITE"){
+    if(nbNon==0){
+      documentModificationEvent.resultat=true;
+  }
+}
+  /* On ne met à jour le registre que si le résultat du vote l'autorise
+  * Si la modification est refusée, on garde quand même une trace
+  */
+
+  if(documentModificationEvent.resultat==true){
+  await documentRegistry.update(document);
+  }
   documentModificationEvent.documentId=document.getIdentifier();
   documentModificationEvent.utilisateurId=contributeurId;
   documentModificationEvent.chaineRemplacee=chaineRemplacee;
@@ -77,67 +127,6 @@ async function modifierDocument(maj){
   //On publie l'évènement
   emit(documentModificationEvent);
 
-  // 7) Appeler les votants pour lancer les votes
   // Pouvoir créer le vote
   var finalTimeStamp = new Date;
-  //var result = finalTimeStamp--firstTimeStamp;
-}
-
-/**
-*Lance le protocole de vote après la demande de l'utilisateur
-*@param {org.vote.demarrerVotes} vote - Le vote
-*@transaction
-*/
-
-async function demarrerVotes(vote){
-  const documentRegistry = await getAssetRegistry(NS + '.Document');
-  const document = await documentRegistry.get(vote.documentId);
-  //On s'assure que le document existe
-  if(!document){
-    throw new Error('Le document avec l\'Id $document.getIdentifier()} n\'existe pas');
-  }
-  // On s'assure que l'utilisateur a les droits
-  var nbOui=0; // nombre de oui
-  var nbNon=0; // nombre de non
-  /* On traite les différentes réponses des clients */
-  for(var i=0;i<vote.listeVotants.length; i++){
-	  var correct=false; // la réponse est-elle correcte?
-      var cur_votant=vote.listeVotants[i];
-	  while(!correct){
-          var fenetre_contributeur = open("","id","");
- 		  var choix = fenetre_contributeur.prompt("Bonjour "+cur_votant+". Validez (OUI) ou refusez (NON) la modification");
-  		 if(choix!="OUI" && choix !="NON"){
-    		alert("OUI et NON seules réponses valides; veuillez entrer une réponse");
-  			}
-  		 if(choix=="OUI"){
-    		correct=true;
-    		nbOui++;
-            }
-  		 if(choix=="NON"){
-   		 correct=true;
-   		 nbNon++;
-		  }
-		}
-}
-  var fenetre_contributeur = open("","id","");
-  var prompt1=fenetre_contributeur.prompt("Validez (OUI) ou refusez (NON) la modification");
-  let voteTermineEvent = getFactory().newEvent(NS, 'voteTermine');
-  voteTermineEvent.resultat=false; // par défaut pour faciliter les vérifications
-  voteTermineEvent.protocoleVote=vote.protocoleVote;
-  voteTermineEvent.documentId=vote.documentId;
-/* On fait le bilan des résulats des demarrerVotes
-*si le protocole est majorité, on vérifie que nbOui>nbNon
-* sinon que nbNon est égal à 0
-*/
-  if(vote.protocoleVote=="MAJORITE"){
-    if(nbOui>nbNon){
-      voteTermineEvent.resultat=true;
-  }
-  }
-  if(vote.protocoleVote=="UNANIMITE"){
-    if(nbNon==0){
-      voteTermineEvent.resultat=true;
-  }
-}
-  emit(voteTermineEvent);
 }
