@@ -89,7 +89,7 @@ rule AndreCanWriteInTheBible {
 }
 
 rule BelzebuthCanWriteInTheCodex {
-  description: "Belzebth has the right to write in the Codex"
+  description: "Belzebuth has the right to write in the Codex"
   participant: "org.vote.Utilisateur#Belzébuth"
   operation: UPDATE
   resource:"org.vote.Document#Codex Gigas"

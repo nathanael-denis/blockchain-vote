@@ -42,6 +42,7 @@ async function modifierDocument(maj){
   //Get participant registry for Utilisateurs
   const utilisateurRegistry = await getParticipantRegistry(NS + '.Utilisateur');
   const document = await documentRegistry.get(maj.documentModifie.getIdentifier());
+  const documentOriginal=document;
   const documentId=document.getIdentifier();
   //On s'assure que le document existe
   if(!document){
@@ -78,6 +79,12 @@ async function modifierDocument(maj){
       var cur_votant=maj.listeVotants[i];
       var fenetre_contributeur=open("",i,""); //on ouvre une page pour demander à l'utilisateur de s'authentifier
 	  while(!correct){
+          fenetre_contributeur.document.write("<h1>"+"La version actuelle du texte est :"+"</h1>"+"<br>"+"</br>");
+          // On affiche la version du texte avant la modification
+          fenetre_contributeur.document.write(documentOriginal.texte);
+          fenetre_contributeur.document.write("<br>"+"</br>"+"<br>"+"</br>"+"<h1>"+"La nouvelle modification est : "+"</h1>"+"<br>"+"/<br>"+maj.chaineInseree);
+          // On affiche la seconde version, après l'insertion
+          fenetre_contributeur.document.write("<br>"+"</br>"+"<h1>"+"La version finale du texte est: "+"</h1>"+ document.texte);
  		  var choix = fenetre_contributeur.prompt("Bonjour "+cur_votant.utilisateurId+". Validez (OUI) ou refusez (NON) la modification");
   		 if(choix!="OUI" && choix !="NON"){
     		alert("OUI et NON seules réponses valides; veuillez entrer une réponse");
